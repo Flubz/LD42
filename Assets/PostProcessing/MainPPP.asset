@@ -100,7 +100,7 @@ MonoBehaviour:
     m_Enabled: 1
     m_Settings:
       bloom:
-        intensity: 0.7
+        intensity: 1.9
         threshold: 1.1
         softKnee: 0.5
         radius: 4
@@ -121,13 +121,13 @@ MonoBehaviour:
         neutralWhiteClip: 10
       basic:
         postExposure: 1
-        temperature: 0
+        temperature: -4
         tint: 0
         hueShift: 0
-        saturation: 1.2
-        contrast: 1.2
+        saturation: 1.21
+        contrast: 1.64
       channelMixer:
-        red: {x: 1, y: 0, z: 0}
+        red: {x: 1.17, y: 0, z: 0}
         green: {x: 0, y: 1, z: 0}
         blue: {x: 0, y: 0, z: 1}
         currentEditingChannel: 0
@@ -281,10 +281,10 @@ MonoBehaviour:
       lut: {fileID: 0}
       contribution: 1
   chromaticAberration:
-    m_Enabled: 0
+    m_Enabled: 1
     m_Settings:
       spectralTexture: {fileID: 0}
-      intensity: 0.1
+      intensity: 0.33
   grain:
     m_Enabled: 0
     m_Settings:
@@ -296,7 +296,7 @@ MonoBehaviour:
     m_Enabled: 1
     m_Settings:
       mode: 0
-      color: {r: 0.7415314, g: 0.27022058, b: 0.875, a: 1}
+      color: {r: 0.34112576, g: 0.27022058, b: 0.875, a: 1}
       center: {x: 0.5, y: 0.5}
       intensity: 0.431
       smoothness: 0.438
