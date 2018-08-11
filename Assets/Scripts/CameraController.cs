@@ -3,47 +3,19 @@ using UnityEngine;
 
 public class CameraController : MonoBehaviour
 {
-	[Header ("Camera Movement")]
-	[SerializeField] float _damping = 1.5f;
-	[SerializeField] Transform _camOffset;
+	[SerializeField] Transform _target;
+	[SerializeField] float _damping = 5f;
+	Vector3 _offset;
 
-	[Header ("Camera Zoom")]
-	[SerializeField] float _minOrthagraphicSize = 1.0f;
-	[SerializeField] float _maxOrthagraphicSize = 10.0f;
-	[Range (0, 1000)][SerializeField] float _mapZoomSpeed = 1.0f;
-
-	[SerializeField] Camera _camera;
-
-	float _tempFloat = 0.0f;
-
-	void Update ()
+	void Start ()
 	{
-		CamMovementPC ();
+		_offset = transform.position - _target.position;
 	}
 
-	private void CamMovementPC ()
+	void LateUpdate ()
 	{
-		_tempFloat = Input.GetAxisRaw ("Horizontal");
-		if (Mathf.Abs (_tempFloat) > 0.1)
-		{
-			transform.position = Vector3.Lerp (transform.position, transform.position + _camOffset.right * _tempFloat, _damping * Time.deltaTime);
-		}
-		_tempFloat = Input.GetAxisRaw ("Vertical");
-		if (Mathf.Abs (_tempFloat) > 0.1)
-		{
-			transform.position = Vector3.Lerp (transform.position, transform.position + _camOffset.forward * _tempFloat, _damping * Time.deltaTime);
-		}
-	}
-
-	float _finalCamScale;
-	void ScrollZoom ()
-	{
-		_tempFloat = Input.GetAxis ("Mouse ScrollWheel");
-		if (_tempFloat != 0f)
-		{
-			_finalCamScale = _camera.orthographicSize + _tempFloat;
-			_camera.orthographicSize = Mathf.Lerp (_camera.orthographicSize, _finalCamScale * _tempFloat, _mapZoomSpeed * Time.deltaTime);
-			Mathf.Clamp (_camera.orthographicSize, _minOrthagraphicSize, _maxOrthagraphicSize);
-		}
+		if (_target == null) return;
+		Vector3 _targetCamPos = _target.position + _offset;
+		transform.position = Vector3.Lerp (transform.position, _targetCamPos, _damping * Time.deltaTime);
 	}
 }

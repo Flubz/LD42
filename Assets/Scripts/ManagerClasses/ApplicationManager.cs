@@ -12,5 +12,10 @@ namespace Managers
 			else if (_instance != this) Destroy (gameObject);
 			DontDestroyOnLoad (gameObject);
 		}
+
+		private void Start ()
+		{
+			// AudioManager._instance.Play ("BombsAway");
+		}
 	}
 }
