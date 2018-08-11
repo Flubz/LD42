@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -20,6 +21,14 @@ public class PlayerController : MonoBehaviour
 	Vector3 _moveDir = Vector3.zero;
 	Vector3 _jumpVelocity = Vector3.zero;
 	Transform _currentPlatform;
+	public PlayerHealth _playerHealth;
+
+	private void Start ()
+	{
+		_playerHealth.ResetHealth ();
+		_playerHealth.OnDeathEvent += OnDeath;
+		_playerHealth.OnDamageEvent += OnDamaged;
+	}
 
 	void Update ()
 	{
@@ -49,6 +58,69 @@ public class PlayerController : MonoBehaviour
 		if (_moveDir.magnitude > _rotationDeadzone)
 			_playerGraphics.rotation = Quaternion.Slerp (_playerGraphics.rotation, Quaternion.LookRotation (_moveDir, Vector3.up), Time.deltaTime * _rotationSpeed);
 		_controller.Move ((_moveDir + _jumpVelocity) * Time.deltaTime);
+	}
 
+	void OnDeath ()
+	{
+		// Give up game over UI;
+		// TODO
+	}
+
+	void OnDamaged ()
+	{
+		// Health UI already updated.
+		ScoreManager._instance.MultiplierReset ();
+		// Update Combo. 
+		// Damaged/Respawn Effect
+		// TODO
+	}
+
+	private void OnDestroy ()
+	{
+		_playerHealth.OnDeathEvent -= OnDeath;
+		_playerHealth.OnDamageEvent -= OnDamaged;
+	}
+
+	private void OnCollisionEnter (Collision other)
+	{
+		if (other.gameObject.CompareTag ("Platform"))
+		{
+			ScoreManager._instance.IncrementScore ();
+		}
+	}
+}
+
+[System.Serializable]
+public class PlayerHealth
+{
+	int _initialMaxHealth = 3;
+	int _health = 3;
+	[SerializeField] GameObject[] _healthUI;
+	public Action OnDeathEvent;
+	public Action OnDamageEvent;
+
+	public void Damage ()
+	{
+		_health--;
+		for (int i = 0; i < _initialMaxHealth; i++)
+		{
+			if (_healthUI[i].activeSelf)
+			{
+				_healthUI[i].SetActive (false);
+				return;
+			}
+		}
+		if (_health >= 0 && OnDeathEvent != null) OnDeathEvent.Invoke ();
+		else OnDamageEvent.Invoke ();
+	}
+
+	public void ResetHealth ()
+	{
+		_health = _initialMaxHealth;
+
+		for (int i = 0; i < _initialMaxHealth; i++)
+		{
+			_healthUI[i].SetActive (true);
+		}
 	}
 }
