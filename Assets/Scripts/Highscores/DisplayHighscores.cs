@@ -60,7 +60,7 @@ public class DisplayHighscores : MonoBehaviour
 	{
 		if (!String.IsNullOrEmpty (_nameField.text.ToString ()))
 		{
-			Highscores.AddNewHighscore (_nameField.text.ToString ().ToUpper (), Int32.Parse (_scoreField.text.ToString ()));
+			Highscores.AddNewHighscore (_nameField.text.ToString (), Int32.Parse (_scoreField.text.ToString ()));
 		}
 		_addButton.interactable = false;
 	}
