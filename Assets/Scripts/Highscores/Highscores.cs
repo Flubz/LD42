@@ -55,7 +55,7 @@ public class Highscores : MonoBehaviour
 		}
 		else
 		{
-			print ("Error Downloading: " + www.error);
+			Debug.Log ("Error Downloading: " + www.error);
 		}
 	}
 
@@ -70,7 +70,6 @@ public class Highscores : MonoBehaviour
 			string username = entryInfo[0];
 			int score = int.Parse (entryInfo[1]);
 			highscoresList[i] = new Highscore (username, score);
-			print (highscoresList[i].username + ": " + highscoresList[i].score);
 		}
 	}
 
