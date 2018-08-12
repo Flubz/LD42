@@ -23,7 +23,7 @@ GameObject:
   - component: {fileID: 65936018390919544}
   - component: {fileID: 23420391762541884}
   - component: {fileID: 114097924987435836}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Platform
   m_TagString: Platform
   m_Icon: {fileID: 0}
@@ -52,7 +52,7 @@ MeshRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
+  m_DynamicOccludee: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -107,7 +107,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b079bdfcfa5da4d4686bee7edcdf6a8b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _speed: 0.3
+  _speed: 20
   _scaleAnimTime: 1
   _deathPos: {x: 0, y: 0, z: -10}
   _spawnEase: 31
+  _meshRenderer: {fileID: 23420391762541884}
+  _touchEffectMaterial: {fileID: 2100000, guid: 85de73ae5a17383429a0883c0c3d5f6b,
+    type: 2}
+  _shake:
+    _duration: 0.1
+    _strength: 0.4
+    _vibratio: 20
+    _randomness: 0
+    _fadeOut: 0

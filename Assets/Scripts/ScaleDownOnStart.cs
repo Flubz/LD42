@@ -7,7 +7,8 @@ public class ScaleDownOnStart : MonoBehaviour
 
 	private void Start ()
 	{
-		transform.DOScale (Vector3.zero, _scaleTime);
+		transform.DOScaleX (Vector3.zero.x, _scaleTime);
+		transform.DOScaleZ (Vector3.zero.z, _scaleTime);
 		Destroy (gameObject, _scaleTime + 0.5f);
 	}
 }

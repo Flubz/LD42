@@ -17,21 +17,27 @@ public class PlayerController : MonoBehaviour
 	[SerializeField] float _airControlAmount = 0.01f;
 	[Tooltip ("How much of the initial movement of the player needs to be in the beginning of the jump?")]
 	[SerializeField] float _initialJumpMultiplier = 1.0f;
+	[SerializeField] float _slamSpeed = 8.0f;
+	[SerializeField] Rigidbody _rb;
 
 	Vector3 _moveDir = Vector3.zero;
 	Vector3 _jumpVelocity = Vector3.zero;
 	Transform _currentPlatform;
 	public PlayerHealth _playerHealth;
+	bool _gameOver;
 
 	private void Start ()
 	{
 		_playerHealth.ResetHealth ();
+		ScoreManager._instance.MultiplierReset ();
 		_playerHealth.OnDeathEvent += OnDeath;
 		_playerHealth.OnDamageEvent += OnDamaged;
 	}
 
 	void Update ()
 	{
+		if (InputManager._instance._InputMode != InputMode.Game || _gameOver) return;
+
 		_moveDir = new Vector3 (Input.GetAxisRaw ("Horizontal"), 0, Input.GetAxisRaw ("Vertical"));
 
 		_moveDir = transform.TransformDirection (_moveDir);
@@ -51,8 +57,16 @@ public class PlayerController : MonoBehaviour
 		}
 		else
 		{
-			_moveDir *= _airControlAmount;
-			_jumpVelocity.y -= _gravity * Time.deltaTime;
+			if (Input.GetButton ("Fire2"))
+			{
+				_moveDir *= _airControlAmount;
+				_jumpVelocity.y -= _gravity * Time.deltaTime * _slamSpeed;
+			}
+			else
+			{
+				_moveDir *= _airControlAmount;
+				_jumpVelocity.y -= _gravity * Time.deltaTime;
+			}
 		}
 
 		if (_moveDir.magnitude > _rotationDeadzone)
@@ -64,6 +78,9 @@ public class PlayerController : MonoBehaviour
 	{
 		// Give up game over UI;
 		// TODO
+		_gameOver = true;
+		_rb.isKinematic = true;
+		DisplayHighscores._instance.GameOver ();
 	}
 
 	void OnDamaged ()
@@ -86,6 +103,7 @@ public class PlayerController : MonoBehaviour
 		if (other.gameObject.CompareTag ("Platform"))
 		{
 			ScoreManager._instance.IncrementScore ();
+			other.gameObject.GetComponent<Platform> ().TouchEffect ();
 		}
 	}
 }
@@ -98,19 +116,23 @@ public class PlayerHealth
 	[SerializeField] GameObject[] _healthUI;
 	public Action OnDeathEvent;
 	public Action OnDamageEvent;
+	public bool _invulnerable;
 
 	public void Damage ()
 	{
-		_health--;
-		for (int i = 0; i < _initialMaxHealth; i++)
+		if (!_invulnerable)
 		{
-			if (_healthUI[i].activeSelf)
+			_health--;
+			for (int i = 0; i < _initialMaxHealth; i++)
 			{
-				_healthUI[i].SetActive (false);
-				return;
+				if (_healthUI[i].activeSelf)
+				{
+					_healthUI[i].SetActive (false);
+					return;
+				}
 			}
 		}
-		if (_health >= 0 && OnDeathEvent != null) OnDeathEvent.Invoke ();
+		if (_health <= 0 && OnDeathEvent != null) OnDeathEvent.Invoke ();
 		else OnDamageEvent.Invoke ();
 	}
 

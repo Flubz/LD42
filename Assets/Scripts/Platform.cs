@@ -9,6 +9,9 @@ public class Platform : MonoBehaviour
 	[SerializeField] float _scaleAnimTime = 1.0f;
 	[SerializeField] Vector3 _deathPos;
 	[SerializeField] Ease _spawnEase = Ease.InOutBounce;
+	[SerializeField] MeshRenderer _meshRenderer;
+	[SerializeField] Material _touchEffectMaterial;
+	[SerializeField] ShakeEffect _shake;
 
 	Vector3 _originalScale;
 	bool _destroyed;
@@ -24,12 +27,18 @@ public class Platform : MonoBehaviour
 	{
 		if (transform.position.z > _deathPos.z)
 		{
-			transform.Translate (transform.forward * -1 * _speed);
+			transform.Translate (transform.forward * -1 * _speed * Time.deltaTime);
 		}
 		else if (!_destroyed)
 		{
 			DestroyPlatform ();
 		}
+	}
+
+	public void TouchEffect ()
+	{
+		_meshRenderer.material = _touchEffectMaterial;
+		transform.DOShakeScale (_shake._duration, _shake._strength, _shake._vibratio, _shake._randomness, _shake._fadeOut);
 	}
 
 	void DestroyPlatform ()
@@ -51,4 +60,14 @@ public class Platform : MonoBehaviour
 		_deathPos.x = _deathPos.y = 0;
 	}
 #endif
+}
+
+[System.Serializable]
+public class ShakeEffect
+{
+	public float _duration = 1;
+	public float _strength = 1;
+	public int _vibratio = 1;
+	public float _randomness = 1;
+	public bool _fadeOut = true;
 }

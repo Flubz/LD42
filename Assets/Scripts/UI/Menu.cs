@@ -9,6 +9,8 @@ namespace Managers
 	{
 		[SerializeField] protected CanvasFader _canvasFader;
 		[SerializeField] bool _disableCanvasGroupOnStart;
+		[SerializeField] InputMode _menuInputMode;
+		InputMode _prevInputMode = InputMode.Game;
 		bool _menuIsOpen;
 
 		public void ToggleMenu ()
@@ -20,6 +22,8 @@ namespace Managers
 		public void OpenMenu ()
 		{
 			if (_menuIsOpen) return;
+			_prevInputMode = InputManager._instance._InputMode;
+			InputManager._instance.SetInputMode (_menuInputMode);
 			_canvasFader.FadeCanvasIn ();
 			_canvasFader.OnFadeInComplete += OnMenuOpened;
 			_menuIsOpen = true;
@@ -32,14 +36,15 @@ namespace Managers
 			_canvasFader.OnFadeOutComplete += OnMenuClosed;
 		}
 
-		void OnMenuOpened ()
+		protected virtual void OnMenuOpened ()
 		{
 			_canvasFader.OnFadeInComplete -= OnMenuOpened;
 		}
 
-		void OnMenuClosed ()
+		protected virtual void OnMenuClosed ()
 		{
 			_canvasFader.OnFadeOutComplete -= OnMenuClosed;
+			InputManager._instance.SetInputMode (_prevInputMode);
 			_menuIsOpen = false;
 		}
 

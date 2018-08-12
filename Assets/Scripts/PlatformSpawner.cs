@@ -7,8 +7,6 @@ public class PlatformSpawner : MonoBehaviour
 	[SerializeField] Platform _platformPrefab;
 	[SerializeField] int _numberOfPlatformsToSpawn = 5;
 	[SerializeField] List<Transform> _spawnPoints;
-	[Tooltip ("Spawn Every X Seconds")]
-	[SerializeField] float _spawnTimer;
 
 	void Start ()
 	{
