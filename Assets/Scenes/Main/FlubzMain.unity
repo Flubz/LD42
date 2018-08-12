@@ -2101,14 +2101,14 @@ Transform:
     type: 2}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 289218314}
-  m_LocalRotation: {x: 0.2588191, y: 0, z: 0, w: 0.9659258}
+  m_LocalRotation: {x: 0.3420201, y: 0, z: 0, w: 0.9396927}
   m_LocalPosition: {x: 0, y: 13, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 860852894}
   m_Father: {fileID: 1766417207}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 30, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 40, y: 0, z: 0}
 --- !u!1 &299349783
 GameObject:
   m_ObjectHideFlags: 0
@@ -8162,7 +8162,7 @@ Camera:
     height: 1
   near clip plane: 0.3
   far clip plane: 1000
-  field of view: 95
+  field of view: 100
   orthographic: 0
   orthographic size: 5
   m_Depth: 0
@@ -9078,7 +9078,6 @@ GameObject:
   - component: {fileID: 1040555393}
   - component: {fileID: 1040555396}
   - component: {fileID: 1040555395}
-  - component: {fileID: 1040555394}
   m_Layer: 0
   m_Name: AudioProcessor
   m_TagString: Untagged
@@ -9100,17 +9099,6 @@ Transform:
   m_Father: {fileID: 346661227}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1040555394
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1040555392}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3426e70a7f09f8841b340ad8e63407be, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!82 &1040555395
 AudioSource:
   m_ObjectHideFlags: 0
@@ -9120,7 +9108,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 059d654a0723bed409a1eea5b9587223, type: 3}
+  m_audioClip: {fileID: 8300000, guid: bdbb0ad9fa6c29f4190adbd1b6c1602a, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 0.1
   m_Pitch: 1
@@ -9758,12 +9746,13 @@ MonoBehaviour:
   _airControlAmount: 14
   _initialJumpMultiplier: 0.2
   _slamSpeed: 8
+  _rb: {fileID: 1146069479}
   _playerHealth:
     _healthUI:
     - {fileID: 1636230954}
     - {fileID: 300140749}
     - {fileID: 1447287668}
-  _rb: {fileID: 1146069479}
+    _invulnerable: 0
 --- !u!54 &1146069479
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -11666,6 +11655,7 @@ MonoBehaviour:
   _canvasFader: {fileID: 1555588186}
   _scoreField: {fileID: 1988626473}
   _nameField: {fileID: 409702675}
+  _addButton: {fileID: 54722864}
 --- !u!1 &1567844850
 GameObject:
   m_ObjectHideFlags: 0

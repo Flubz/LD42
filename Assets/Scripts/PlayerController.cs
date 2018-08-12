@@ -29,6 +29,7 @@ public class PlayerController : MonoBehaviour
 	private void Start ()
 	{
 		_playerHealth.ResetHealth ();
+		ScoreManager._instance.MultiplierReset ();
 		_playerHealth.OnDeathEvent += OnDeath;
 		_playerHealth.OnDamageEvent += OnDamaged;
 	}
@@ -115,16 +116,20 @@ public class PlayerHealth
 	[SerializeField] GameObject[] _healthUI;
 	public Action OnDeathEvent;
 	public Action OnDamageEvent;
+	public bool _invulnerable;
 
 	public void Damage ()
 	{
-		_health--;
-		for (int i = 0; i < _initialMaxHealth; i++)
+		if (!_invulnerable)
 		{
-			if (_healthUI[i].activeSelf)
+			_health--;
+			for (int i = 0; i < _initialMaxHealth; i++)
 			{
-				_healthUI[i].SetActive (false);
-				return;
+				if (_healthUI[i].activeSelf)
+				{
+					_healthUI[i].SetActive (false);
+					return;
+				}
 			}
 		}
 		if (_health <= 0 && OnDeathEvent != null) OnDeathEvent.Invoke ();

@@ -12,6 +12,7 @@ public class DisplayHighscores : MonoBehaviour
 
 	[SerializeField] Text _scoreField;
 	[SerializeField] Text _nameField;
+	[SerializeField] Button _addButton;
 
 	public static DisplayHighscores _instance = null;
 
@@ -46,6 +47,7 @@ public class DisplayHighscores : MonoBehaviour
 	public void GameOver ()
 	{
 		_canvasFader.FadeCanvasIn ();
+		_addButton.interactable = true;
 		_scoreField.text = ScoreManager._instance._CurrentScore.ToString ();
 	}
 
@@ -60,6 +62,7 @@ public class DisplayHighscores : MonoBehaviour
 		{
 			Highscores.AddNewHighscore (_nameField.text.ToString ().ToUpper (), Int32.Parse (_scoreField.text.ToString ()));
 		}
+		_addButton.interactable = false;
 	}
 
 	[System.Serializable]

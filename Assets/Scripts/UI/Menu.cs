@@ -44,12 +44,12 @@ namespace Managers
 		protected virtual void OnMenuClosed ()
 		{
 			_canvasFader.OnFadeOutComplete -= OnMenuClosed;
+			InputManager._instance.SetInputMode (_prevInputMode);
 			_menuIsOpen = false;
 		}
 
 		private void OnDestroy ()
 		{
-			InputManager._instance.SetInputMode (_prevInputMode);
 			_canvasFader.OnFadeInComplete -= OnMenuOpened;
 			_canvasFader.OnFadeOutComplete -= OnMenuClosed;
 		}
