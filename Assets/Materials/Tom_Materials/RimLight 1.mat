@@ -6,10 +6,10 @@ Material:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: SkullFlubz
-  m_Shader: {fileID: 4800000, guid: 24b2597cbdbf06f46a58507d6b0ffb94, type: 3}
-  m_ShaderKeywords: 
-  m_LightmapFlags: 0
+  m_Name: RimLight 1
+  m_Shader: {fileID: 4800000, guid: d52783133eb3d144cb449f9d886e0634, type: 3}
+  m_ShaderKeywords: _EMISSION
+  m_LightmapFlags: 1
   m_EnableInstancingVariants: 1
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: -1
@@ -18,6 +18,10 @@ Material:
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
+    - _Albedo:
+        m_Texture: {fileID: 2800000, guid: ff9da6b9c3ae4e8439ce851c4452c3a0, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _BumpMap:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -42,8 +46,20 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _Metallic:
+        m_Texture: {fileID: 2800000, guid: 6618005f6bafebf40b3d09f498401fba, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _MetallicGlossMap:
         m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Normals:
+        m_Texture: {fileID: 2800000, guid: 066f29fd0fc3d0341b96857dcf2cede3, type: 3}
+        m_Scale: {x: 2, y: 2}
+        m_Offset: {x: 0, y: 0}
+    - _Occlusion:
+        m_Texture: {fileID: 2800000, guid: a8de9c9c15d9c7e4eaa883c727391bee, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _OcclusionMap:
@@ -55,11 +71,23 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _TextureSample0:
-        m_Texture: {fileID: 2800000, guid: b2235d9a89678204b9cfa05d87819240, type: 3}
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    - _TextureSample1:
-        m_Texture: {fileID: 2800000, guid: 1b1aad2617dc42f478465e4bf323a0f5, type: 3}
+    - _char_woodman_diffuse:
+        m_Texture: {fileID: 2800000, guid: 1c335bac7dc9aa445bb8c34cf4a296b1, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _char_woodman_metallic:
+        m_Texture: {fileID: 2800000, guid: 2be69b1584d71e048a393fff2ef0a80d, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _char_woodman_normals:
+        m_Texture: {fileID: 2800000, guid: 3832909a151eb124e80a8c701d5a7014, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _char_woodman_occlusion:
+        m_Texture: {fileID: 2800000, guid: eca2288426df1a449b4f8e08f7d7e1b7, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _texcoord:
@@ -67,19 +95,12 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
-    - _ABBERATION: 1
-    - _AOIntensity: 2
     - _BumpScale: 1
-    - _Contrast: -4.5
     - _Cutoff: 0.5
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
-    - _Float0: 2
-    - _Float2: 1
-    - _FreBias: 1
-    - _FrePower: 1
-    - _FreScale: 1
-    - _FresnelIntensity: 0.69
+    - _Float0: 1.2702224
+    - _Float1: 1.5794355
     - _GlossMapScale: 1
     - _Glossiness: 0.5
     - _GlossyReflections: 1
@@ -87,16 +108,20 @@ Material:
     - _Mode: 0
     - _OcclusionStrength: 1
     - _Parallax: 0.02
+    - _RimPower: 2.6
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1
+    - _TransAmbient: 0.2
+    - _TransDirect: 1
+    - _TransNormalDistortion: 0.1
+    - _TransScattering: 2
+    - _TransShadow: 0.9
+    - _Translucency: 1
     - _UVSec: 0
     - _ZWrite: 1
-    - __dirty: 0
+    - __dirty: 1
     m_Colors:
-    - _Albedo: {r: 1, g: 0.8602941, b: 0.8602941, a: 0}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
-    - _Color0: {r: 1, g: 0.9191176, b: 0.9191176, a: 0}
-    - _EmissionColor: {r: 0.46323532, g: 0.42576775, b: 0.42576775, a: 0}
-    - _Emissive: {r: 1, g: 0.22794116, b: 0.22794116, a: 0}
-    - _EmissiveColour: {r: 1, g: 0.60294116, b: 0.60294116, a: 0}
+    - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
+    - _RimColor: {r: 0.4852941, g: 0.7163038, b: 1, a: 0}
