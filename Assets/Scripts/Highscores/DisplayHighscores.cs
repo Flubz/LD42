@@ -38,7 +38,7 @@ public class DisplayHighscores : MonoBehaviour
 			highscoreFields[i].name.text = i + 1 + ". ";
 			if (i < highscoreList.Length)
 			{
-				highscoreFields[i].name.text += highscoreList[i].username.ToUpper ();
+				highscoreFields[i].name.text += highscoreList[i].username;
 				highscoreFields[i].score.text = highscoreList[i].score.ToString ();
 			}
 		}

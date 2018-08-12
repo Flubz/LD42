@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine;
 
-[RequireComponent (typeof(AudioSource))]
+[RequireComponent (typeof (AudioSource))]
 public class AudioProcessor : MonoBehaviour
 {
 	public AudioSource audioSource;
@@ -92,6 +92,13 @@ public class AudioProcessor : MonoBehaviour
 		alph = 100 * gThresh;
 	}
 
+	public static AudioProcessor _instance = null;
+
+	void Awake ()
+	{
+		if (_instance == null) _instance = this;
+	}
+
 	// Use this for initialization
 	void Start ()
 	{
@@ -100,12 +107,12 @@ public class AudioProcessor : MonoBehaviour
 		audioSource = GetComponent<AudioSource> ();
 		samplingRate = audioSource.clip.frequency;
 
-		framePeriod = (float)bufferSize / (float)samplingRate;
+		framePeriod = (float) bufferSize / (float) samplingRate;
 
 		//initialize record of previous spectrum
 		spec = new float[nBand];
 		for (int i = 0; i < nBand; ++i)
-			spec [i] = 100.0f;
+			spec[i] = 100.0f;
 
 		auco = new Autoco (maxlag, decay, framePeriod, getBandWidth ());
 
@@ -120,7 +127,7 @@ public class AudioProcessor : MonoBehaviour
 		sum = sum + diff;
 		entries++;
 
-		int average = (int)(sum / entries);
+		int average = (int) (sum / entries);
 
 		Debug.Log ("average = " + average);
 	}
@@ -131,8 +138,9 @@ public class AudioProcessor : MonoBehaviour
 			return null;
 		int n = arr.Length;
 		double[] ret = new double[n];
-		for (int i = 0; i < n; i++) {
-			ret [i] = (float)arr [i];
+		for (int i = 0; i < n; i++)
+		{
+			ret[i] = (float) arr[i];
 		}
 		return ret;
 	}
@@ -140,22 +148,24 @@ public class AudioProcessor : MonoBehaviour
 	// Update is called once per frame
 	void Update ()
 	{
-		if (audioSource.isPlaying) {
+		if (audioSource.isPlaying)
+		{
 			audioSource.GetSpectrumData (spectrum, 0, FFTWindow.BlackmanHarris);
 			computeAverages (spectrum);
 			onSpectrum.Invoke (averages);
 
 			/* calculate the value of the onset function in this frame */
 			float onset = 0;
-			for (int i = 0; i < nBand; i++) {
-				float specVal = (float)System.Math.Max (-100.0f, 20.0f * (float)System.Math.Log10 (averages [i]) + 160); // dB value of this band
+			for (int i = 0; i < nBand; i++)
+			{
+				float specVal = (float) System.Math.Max (-100.0f, 20.0f * (float) System.Math.Log10 (averages[i]) + 160); // dB value of this band
 				specVal *= 0.025f;
-				float dbInc = specVal - spec [i]; // dB increment since last frame
-				spec [i] = specVal; // record this frome to use next time around
+				float dbInc = specVal - spec[i]; // dB increment since last frame
+				spec[i] = specVal; // record this frome to use next time around
 				onset += dbInc; // onset function is the sum of dB increments
 			}
 
-			onsets [now] = onset;
+			onsets[now] = onset;
 
 			/* update autocorrelator and find peak lag = current tempo */
 			auco.newVal (onset);
@@ -163,14 +173,16 @@ public class AudioProcessor : MonoBehaviour
 			float aMax = 0.0f;
 			int tempopd = 0;
 			//float[] acVals = new float[maxlag];
-			for (int i = 0; i < maxlag; ++i) {
-				float acVal = (float)System.Math.Sqrt (auco.autoco (i));
-				if (acVal > aMax) {
+			for (int i = 0; i < maxlag; ++i)
+			{
+				float acVal = (float) System.Math.Sqrt (auco.autoco (i));
+				if (acVal > aMax)
+				{
 					aMax = acVal;
 					tempopd = i;
 				}
 				// store in array backwards, so it displays right-to-left, in line with traces
-				acVals [maxlag - 1 - i] = acVal;
+				acVals[maxlag - 1 - i] = acVal;
 			}
 
 			/* calculate DP-ish function to update the best-score function */
@@ -179,47 +191,53 @@ public class AudioProcessor : MonoBehaviour
 			// weight can be varied dynamically with the mouse
 			alph = 100 * gThresh;
 			// consider all possible preceding beat times from 0.5 to 2.0 x current tempo period
-			for (int i = tempopd / 2; i < System.Math.Min (colmax, 2 * tempopd); ++i) {
+			for (int i = tempopd / 2; i < System.Math.Min (colmax, 2 * tempopd); ++i)
+			{
 				// objective function - this beat's cost + score to last beat + transition penalty
-				float score = onset + scorefun [(now - i + colmax) % colmax] - alph * (float)System.Math.Pow (System.Math.Log ((float)i / (float)tempopd), 2);
+				float score = onset + scorefun[(now - i + colmax) % colmax] - alph * (float) System.Math.Pow (System.Math.Log ((float) i / (float) tempopd), 2);
 				// keep track of the best-scoring predecesor
-				if (score > smax) {
+				if (score > smax)
+				{
 					smax = score;
 					smaxix = i;
 				}
 			}
 
-			scorefun [now] = smax;
+			scorefun[now] = smax;
 			// keep the smallest value in the score fn window as zero, by subtracing the min val
-			float smin = scorefun [0];
+			float smin = scorefun[0];
 			for (int i = 0; i < colmax; ++i)
-				if (scorefun [i] < smin)
-					smin = scorefun [i];
+				if (scorefun[i] < smin)
+					smin = scorefun[i];
 			for (int i = 0; i < colmax; ++i)
-				scorefun [i] -= smin;
+				scorefun[i] -= smin;
 
 			/* find the largest value in the score fn window, to decide if we emit a blip */
-			smax = scorefun [0];
+			smax = scorefun[0];
 			smaxix = 0;
-			for (int i = 0; i < colmax; ++i) {
-				if (scorefun [i] > smax) {
-					smax = scorefun [i];
+			for (int i = 0; i < colmax; ++i)
+			{
+				if (scorefun[i] > smax)
+				{
+					smax = scorefun[i];
 					smaxix = i;
 				}
 			}
 
 			// dobeat array records where we actally place beats
-			dobeat [now] = 0;  // default is no beat this frame
+			dobeat[now] = 0; // default is no beat this frame
 			++sinceLast;
 			// if current value is largest in the array, probably means we're on a beat
-			if (smaxix == now) {
+			if (smaxix == now)
+			{
 				//tapTempo();
 				// make sure the most recent beat wasn't too recently
-				if (sinceLast > tempopd / 4) {
-					onBeat.Invoke ();			
-					blipDelay [0] = 1;
+				if (sinceLast > tempopd / 4)
+				{
+					onBeat.Invoke ();
+					blipDelay[0] = 1;
 					// record that we did actually mark a beat this frame
-					dobeat [now] = 1;
+					dobeat[now] = 1;
 					// reset counter of frames since last beat
 					sinceLast = 0;
 				}
@@ -252,7 +270,7 @@ public class AudioProcessor : MonoBehaviour
 
 	public float getBandWidth ()
 	{
-		return (2f / (float)bufferSize) * (samplingRate / 2f);
+		return (2f / (float) bufferSize) * (samplingRate / 2f);
 	}
 
 	public int freqToIndex (int freq)
@@ -264,32 +282,34 @@ public class AudioProcessor : MonoBehaviour
 		if (freq > samplingRate / 2 - getBandWidth () / 2)
 			return (bufferSize / 2);
 		// all other cases
-		float fraction = (float)freq / (float)samplingRate;
-		int i = (int)System.Math.Round (bufferSize * fraction);
+		float fraction = (float) freq / (float) samplingRate;
+		int i = (int) System.Math.Round (bufferSize * fraction);
 		//Debug.Log("frequency: " + freq + ", index: " + i);
 		return i;
 	}
 
 	public void computeAverages (float[] data)
 	{
-		for (int i = 0; i < 12; i++) {
+		for (int i = 0; i < 12; i++)
+		{
 			float avg = 0;
 			int lowFreq;
 			if (i == 0)
 				lowFreq = 0;
 			else
-				lowFreq = (int)((samplingRate / 2) / (float)System.Math.Pow (2, 12 - i));
-			int hiFreq = (int)((samplingRate / 2) / (float)System.Math.Pow (2, 11 - i));
+				lowFreq = (int) ((samplingRate / 2) / (float) System.Math.Pow (2, 12 - i));
+			int hiFreq = (int) ((samplingRate / 2) / (float) System.Math.Pow (2, 11 - i));
 			int lowBound = freqToIndex (lowFreq);
 			int hiBound = freqToIndex (hiFreq);
-			for (int j = lowBound; j <= hiBound; j++) {
+			for (int j = lowBound; j <= hiBound; j++)
+			{
 				//Debug.Log("lowbound: " + lowBound + ", highbound: " + hiBound);
-				avg += data [j];
+				avg += data[j];
 			}
 			// line has been changed since discussion in the comments
 			// avg /= (hiBound - lowBound);
 			avg /= (hiBound - lowBound + 1);
-			averages [i] = avg;
+			averages[i] = avg;
 		}
 	}
 
@@ -300,8 +320,10 @@ public class AudioProcessor : MonoBehaviour
 
 	public float constrain (float value, float inclusiveMinimum, float inlusiveMaximum)
 	{
-		if (value >= inclusiveMinimum) {
-			if (value <= inlusiveMaximum) {
+		if (value >= inclusiveMinimum)
+		{
+			if (value <= inlusiveMaximum)
+			{
 				return value;
 			}
 
@@ -318,7 +340,7 @@ public class AudioProcessor : MonoBehaviour
 	}
 
 	[System.Serializable]
-	public class OnSpectrumEventHandler : UnityEngine.Events.UnityEvent<float []>
+	public class OnSpectrumEventHandler : UnityEngine.Events.UnityEvent<float[]>
 	{
 
 	}
@@ -349,23 +371,25 @@ public class AudioProcessor : MonoBehaviour
 			// calculate a log-lag gaussian weighting function, to prefer tempi around 120 bpm
 			bpms = new float[del_length];
 			rweight = new float[del_length];
-			for (int i = 0; i < del_length; ++i) {
-				bpms [i] = 60.0f / (framePeriod * (float)i);
+			for (int i = 0; i < del_length; ++i)
+			{
+				bpms[i] = 60.0f / (framePeriod * (float) i);
 				//Debug.Log(bpms[i]);
 				// weighting is Gaussian on log-BPM axis, centered at wmidbpm, SD = woctavewidth octaves
-				rweight [i] = (float)System.Math.Exp (-0.5f * System.Math.Pow (System.Math.Log (bpms [i] / wmidbpm) / System.Math.Log (2.0f) / woctavewidth, 2.0f));
+				rweight[i] = (float) System.Math.Exp (-0.5f * System.Math.Pow (System.Math.Log (bpms[i] / wmidbpm) / System.Math.Log (2.0f) / woctavewidth, 2.0f));
 			}
 		}
 
 		public void newVal (float val)
 		{
 
-			delays [indx] = val;
+			delays[indx] = val;
 
 			// update running autocorrelator values
-			for (int i = 0; i < del_length; ++i) {
+			for (int i = 0; i < del_length; ++i)
+			{
 				int delix = (indx - i + del_length) % del_length;
-				outputs [i] += (1 - decay) * (delays [indx] * delays [delix] - outputs [i]);
+				outputs[i] += (1 - decay) * (delays[indx] * delays[delix] - outputs[i]);
 			}
 
 			if (++indx == del_length)
@@ -375,19 +399,18 @@ public class AudioProcessor : MonoBehaviour
 		// read back the current autocorrelator value at a particular lag
 		public float autoco (int del)
 		{
-			float blah = rweight [del] * outputs [del];
+			float blah = rweight[del] * outputs[del];
 			return blah;
 		}
 
 		public float avgBpm ()
 		{
 			float sum = 0;
-			for (int i = 0; i < bpms.Length; ++i) {
-				sum += bpms [i];
+			for (int i = 0; i < bpms.Length; ++i)
+			{
+				sum += bpms[i];
 			}
 			return sum / del_length;
 		}
 	}
 }
-
-
