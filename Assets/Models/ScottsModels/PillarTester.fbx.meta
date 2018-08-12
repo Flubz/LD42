@@ -13,12 +13,12 @@ ModelImporter:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: Emiss
-    second: {fileID: 2100000, guid: 9671162f51c19aa4dbae2c00d52a976d, type: 2}
+    second: {fileID: 2100000, guid: 863f2a0f1d2148c4db5067c90b9ca452, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: lambert1
-    second: {fileID: 2100000, guid: db79c605f75adf44cb036bfe6da934f2, type: 2}
+    second: {fileID: 2100000, guid: 800ec33a9c0fe564b9b72cdd97dc8d9e, type: 2}
   materials:
     importMaterials: 0
     materialName: 0
