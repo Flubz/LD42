@@ -12,8 +12,8 @@ public class Respawner : MonoBehaviour
 	{
 		if (other.gameObject.CompareTag ("Player"))
 		{
-			StartCoroutine (Respawn (other.transform));
 			other.gameObject.GetComponent<PlayerController> ()._playerHealth.Damage ();
+			StartCoroutine (Respawn (other.transform));
 		}
 	}
 

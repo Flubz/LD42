@@ -128,12 +128,12 @@ public class PlayerHealth
 				if (_healthUI[i].activeSelf)
 				{
 					_healthUI[i].SetActive (false);
-					return;
+					break;
 				}
 			}
 		}
+		if (OnDamageEvent != null) OnDamageEvent.Invoke ();
 		if (_health <= 0 && OnDeathEvent != null) OnDeathEvent.Invoke ();
-		else OnDamageEvent.Invoke ();
 	}
 
 	public void ResetHealth ()
