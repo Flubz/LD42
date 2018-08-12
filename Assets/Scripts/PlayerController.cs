@@ -17,11 +17,14 @@ public class PlayerController : MonoBehaviour
 	[SerializeField] float _airControlAmount = 0.01f;
 	[Tooltip ("How much of the initial movement of the player needs to be in the beginning of the jump?")]
 	[SerializeField] float _initialJumpMultiplier = 1.0f;
+	[SerializeField] float _slamSpeed = 8.0f;
+	[SerializeField] Rigidbody _rb;
 
 	Vector3 _moveDir = Vector3.zero;
 	Vector3 _jumpVelocity = Vector3.zero;
 	Transform _currentPlatform;
 	public PlayerHealth _playerHealth;
+	bool _gameOver;
 
 	private void Start ()
 	{
@@ -32,6 +35,8 @@ public class PlayerController : MonoBehaviour
 
 	void Update ()
 	{
+		if (InputManager._instance._InputMode != InputMode.Game || _gameOver) return;
+
 		_moveDir = new Vector3 (Input.GetAxisRaw ("Horizontal"), 0, Input.GetAxisRaw ("Vertical"));
 
 		_moveDir = transform.TransformDirection (_moveDir);
@@ -51,8 +56,16 @@ public class PlayerController : MonoBehaviour
 		}
 		else
 		{
-			_moveDir *= _airControlAmount;
-			_jumpVelocity.y -= _gravity * Time.deltaTime;
+			if (Input.GetButton ("Fire2"))
+			{
+				_moveDir *= _airControlAmount;
+				_jumpVelocity.y -= _gravity * Time.deltaTime * _slamSpeed;
+			}
+			else
+			{
+				_moveDir *= _airControlAmount;
+				_jumpVelocity.y -= _gravity * Time.deltaTime;
+			}
 		}
 
 		if (_moveDir.magnitude > _rotationDeadzone)
@@ -64,6 +77,9 @@ public class PlayerController : MonoBehaviour
 	{
 		// Give up game over UI;
 		// TODO
+		_gameOver = true;
+		_rb.isKinematic = true;
+		DisplayHighscores._instance.GameOver ();
 	}
 
 	void OnDamaged ()
@@ -86,6 +102,7 @@ public class PlayerController : MonoBehaviour
 		if (other.gameObject.CompareTag ("Platform"))
 		{
 			ScoreManager._instance.IncrementScore ();
+			other.gameObject.GetComponent<Platform> ().TouchEffect ();
 		}
 	}
 }
@@ -110,7 +127,7 @@ public class PlayerHealth
 				return;
 			}
 		}
-		if (_health >= 0 && OnDeathEvent != null) OnDeathEvent.Invoke ();
+		if (_health <= 0 && OnDeathEvent != null) OnDeathEvent.Invoke ();
 		else OnDamageEvent.Invoke ();
 	}
 

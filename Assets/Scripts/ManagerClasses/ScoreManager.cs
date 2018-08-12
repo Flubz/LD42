@@ -21,7 +21,7 @@ public class ScoreManager : MonoBehaviour
 	public int _CurrentScore { get; private set; }
 	public int _CurrentMultipier { get; private set; }
 
-	[SerializeField] int _maxMultiplierAmount = 256;
+	[SerializeField] int _maxMultiplierAmount = 64;
 	[SerializeField] int _scoreForPlatform = 10;
 
 	[SerializeField] Text _multiText;
