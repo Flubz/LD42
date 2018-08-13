@@ -12,12 +12,11 @@ public class ScoreManager : MonoBehaviour
 		if (_instance == null) _instance = this;
 		else if (_instance != this) Destroy (gameObject);
 		_canvasFader.FadeCanvasIn ();
-		_canAddToScore.TriggerEvent (this);
 		_CurrentMultipier = 1;
 	}
 
 	[SerializeField] CanvasFader _canvasFader;
-	[SerializeField] TimedEvent _canAddToScore;
+	[SerializeField] Image _multiplierUnlocker;
 
 	public int _CurrentScore { get; private set; }
 	public int _CurrentMultipier { get; private set; }
@@ -28,24 +27,31 @@ public class ScoreManager : MonoBehaviour
 	[SerializeField] Text _multiText;
 	[SerializeField] Text _scoreText;
 
+	[SerializeField] int _notesForNextMultiUnlock = 5;
+	int _currentNotesHitCount;
+	bool _maxMulti;
+
 	public void IncrementScore ()
 	{
-		if (!_canAddToScore.IsEventReady ()) return;
-		_canAddToScore.TriggerEvent (this);
 		_CurrentScore += _scoreForPlatform * _CurrentMultipier;
 		_scoreText.text = _CurrentScore.ToString ();
-		MultiplierStepUp ();
+		_currentNotesHitCount++;
+		if (!_maxMulti) _multiplierUnlocker.fillAmount = (float) _currentNotesHitCount / (float) _notesForNextMultiUnlock;
+		if (_currentNotesHitCount == _notesForNextMultiUnlock) MultiplierStepUp ();
 	}
 
 	void MultiplierStepUp ()
 	{
-		if (_CurrentMultipier < _maxMultiplierAmount)
-			_CurrentMultipier *= 2;
+		_currentNotesHitCount = 0;
+		if (_CurrentMultipier < _maxMultiplierAmount) _CurrentMultipier *= 2;
+		else _maxMulti = true;
 		_multiText.text = "x" + _CurrentMultipier.ToString ();
 	}
 
 	public void MultiplierReset ()
 	{
+		_maxMulti = false;
+		_multiplierUnlocker.fillAmount = 0;
 		_CurrentMultipier = 1;
 		_multiText.text = "x" + _CurrentMultipier.ToString ();
 	}
