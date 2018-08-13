@@ -32,6 +32,8 @@ namespace Managers
 		public void OnClickStartGame ()
 		{
 			CloseMenu ();
+			AudioProcessor._instance.audioSource.Stop ();
+			AudioProcessor._instance.audioSource.Play ();
 			InputManager._instance.SetInputMode (InputMode.Game);
 			_menuEffect.Stop ();
 		}
