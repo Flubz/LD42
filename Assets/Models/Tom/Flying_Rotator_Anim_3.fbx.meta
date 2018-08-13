@@ -1,30 +1,30 @@
 fileFormatVersion: 2
-guid: ff6f8aca531ae7a4e9ea611ccad729e0
+guid: 4ef8b673b65e02e44a3bff4de95d1b0a
 ModelImporter:
   serializedVersion: 22
   fileIDToRecycleName:
     100000: //RootNode
-    100002: pCube31
-    100004: pCube32
-    100006: pCube33
-    100008: pCube34
+    100002: Part1
+    100004: Part2
+    100006: Part3
+    100008: Part4
     400000: //RootNode
-    400002: pCube31
-    400004: pCube32
-    400006: pCube33
-    400008: pCube34
-    2300000: pCube31
-    2300002: pCube32
-    2300004: pCube33
-    2300006: pCube34
-    3300000: pCube31
-    3300002: pCube32
-    3300004: pCube33
-    3300006: pCube34
-    4300000: pCube31
-    4300002: pCube32
-    4300004: pCube33
-    4300006: pCube34
+    400002: Part1
+    400004: Part2
+    400006: Part3
+    400008: Part4
+    2300000: Part1
+    2300002: Part2
+    2300004: Part3
+    2300006: Part4
+    3300000: Part1
+    3300002: Part2
+    3300004: Part3
+    3300006: Part4
+    4300000: Part1
+    4300002: Part2
+    4300004: Part3
+    4300006: Part4
     7400000: Take 001
     9500000: //RootNode
   externalObjects: {}
@@ -53,7 +53,35 @@ ModelImporter:
     animationWrapMode: 0
     extraExposedTransformPaths: []
     extraUserProperties: []
-    clipAnimations: []
+    clipAnimations:
+    - serializedVersion: 16
+      name: Take 001
+      takeName: Take 001
+      firstFrame: 0
+      lastFrame: 120
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 1
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     isReadable: 1
   meshes:
     lODScreenPercentages: []
