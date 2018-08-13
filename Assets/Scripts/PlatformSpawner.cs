@@ -48,7 +48,7 @@ public class PlatformSpawner : MonoBehaviour
 			t = (Random.Range (_randRangePlatformSpawnRate.x, _randRangePlatformSpawnRate.y));
 			SpawnPlatforms ();
 			UpdatePlatformSpawnRateIndex ();
-			yield return new WaitForSeconds (t + _platformSpawnRate[_currentSpawnRateIndex]._spawnRate);
+			yield return new WaitForSeconds (t + _platformSpawnRate[_currentSpawnRateIndex]._spawnDelay);
 		}
 	}
 
@@ -83,9 +83,10 @@ public class PlatformSpawner : MonoBehaviour
 	[System.Serializable]
 	class PlatformsSpawnRateAtTime
 	{
+		[Header ("")]
 		[Range (0, 256.2f)]
 		public float _time = 0;
-		public float _spawnRate = 0.1f;
+		[Range (0, 1.5f)] public float _spawnDelay = 0.1f;
 	}
 
 	//this event will be called every time a beat is detected.
