@@ -20,11 +20,11 @@ RenderSettings:
   m_FogDensity: 0.0008
   m_LinearFogStart: 0
   m_LinearFogEnd: 300
-  m_AmbientSkyColor: {r: 0.102941155, g: 0.102941155, b: 0.102941155, a: 1}
+  m_AmbientSkyColor: {r: 0.1, g: 0.1, b: 0.1, a: 1}
   m_AmbientEquatorColor: {r: 0.03676468, g: 0.03676468, b: 0.03676468, a: 1}
   m_AmbientGroundColor: {r: 0, g: 0, b: 0, a: 1}
   m_AmbientIntensity: 0
-  m_AmbientMode: 1
+  m_AmbientMode: 4
   m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
   m_SkyboxMaterial: {fileID: 0}
   m_HaloStrength: 0.5
@@ -13902,7 +13902,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: bdbb0ad9fa6c29f4190adbd1b6c1602a, type: 3}
   m_PlayOnAwake: 1
-  m_Volume: 0.1
+  m_Volume: 0.049
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -29426,11 +29426,11 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 9ec34a7177f97f543913c23226108a9d, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0.029666247
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 9ec34a7177f97f543913c23226108a9d, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.9995599
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 9ec34a7177f97f543913c23226108a9d, type: 3}
       propertyPath: m_RootOrder
@@ -29442,7 +29442,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 9ec34a7177f97f543913c23226108a9d, type: 3}
       propertyPath: m_LocalScale.z
-      value: 2
+      value: 1.63
       objectReference: {fileID: 0}
     - target: {fileID: 2300000, guid: 9ec34a7177f97f543913c23226108a9d, type: 3}
       propertyPath: m_Materials.Array.data[0]
@@ -29450,11 +29450,11 @@ Prefab:
       objectReference: {fileID: 2100000, guid: db79c605f75adf44cb036bfe6da934f2, type: 2}
     - target: {fileID: 400000, guid: 9ec34a7177f97f543913c23226108a9d, type: 3}
       propertyPath: m_LocalScale.y
-      value: 2
+      value: 3.9
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 9ec34a7177f97f543913c23226108a9d, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
-      value: 3.4
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 9ec34a7177f97f543913c23226108a9d, type: 3}
