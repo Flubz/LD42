@@ -5,23 +5,25 @@ using UnityEngine;
 public class PlatformSpawner : MonoBehaviour
 {
 	[SerializeField] Platform _platformPrefab;
-	[SerializeField] int _numberOfPlatformsToSpawn = 5;
 	[SerializeField] List<Transform> _spawnPoints;
+	[SerializeField] List<PlatformsToSpawnAtTime> _platformsAtTime;
+	AudioProcessor _processor;
+	int _currentIndex = 0;
 
 	void Start ()
 	{
-		//Select the instance of AudioProcessor and pass a reference
-		//to this object
-		AudioProcessor processor = FindObjectOfType<AudioProcessor> ();
-		processor.onBeat.AddListener (onOnbeatDetected);
-		processor.onSpectrum.AddListener (onSpectrum);
+		_processor = AudioProcessor._instance;
+		_processor.onBeat.AddListener (onOnbeatDetected);
+		_processor.onSpectrum.AddListener (onSpectrum);
+		_currentIndex = 0;
 	}
 
 	void SpawnPlatforms ()
 	{
+		UpdatePlatformCountIndex ();
 		_spawnPoints.Shuffle ();
 
-		for (int i = 0; i < _numberOfPlatformsToSpawn + 1; i++)
+		for (int i = 0; i < _platformsAtTime[_currentIndex]._numberOfPlatforms; i++)
 		{
 			Instantiate (_platformPrefab, _spawnPoints[i].position, Quaternion.identity, transform);
 		}
@@ -47,6 +49,23 @@ public class PlatformSpawner : MonoBehaviour
 			Vector3 end = new Vector3 (i, spectrum[i], 0);
 			Debug.DrawLine (start, end);
 		}
+	}
+
+	void UpdatePlatformCountIndex ()
+	{
+		if (_currentIndex + 1 == _platformsAtTime.Count) return;
+		if (_processor.audioSource.time > _platformsAtTime[_currentIndex + 1]._time)
+		{
+			_currentIndex++;
+		}
+	}
+
+	[System.Serializable]
+	class PlatformsToSpawnAtTime
+	{
+		[Range (0, 256.2f)]
+		public float _time = 0;
+		public int _numberOfPlatforms = 0;
 	}
 
 }
