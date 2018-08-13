@@ -10216,8 +10216,8 @@ TrailRenderer:
       m_RotationOrder: 0
     colorGradient:
       serializedVersion: 2
-      key0: {r: 1, g: 0.8896551, b: 0, a: 0}
-      key1: {r: 1, g: 0.8896551, b: 0, a: 1}
+      key0: {r: 1, g: 0.39310342, b: 0, a: 0}
+      key1: {r: 1, g: 0, b: 0, a: 1}
       key2: {r: 1, g: 0, b: 0, a: 0.08235294}
       key3: {r: 0, g: 0, b: 0, a: 0}
       key4: {r: 0, g: 0, b: 0, a: 0}
@@ -11618,6 +11618,7 @@ GameObject:
   - component: {fileID: 831954943}
   - component: {fileID: 831954942}
   - component: {fileID: 831954940}
+  - component: {fileID: 831954941}
   m_Layer: 0
   m_Name: Strip
   m_TagString: Untagged
@@ -11659,6 +11660,18 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!65 &831954941
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 831954939}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1.0000002, y: 1, z: 1.0000002}
+  m_Center: {x: -0.000000017695129, y: 0, z: 0}
 --- !u!33 &831954942
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -26221,8 +26234,8 @@ TrailRenderer:
       m_RotationOrder: 0
     colorGradient:
       serializedVersion: 2
-      key0: {r: 1, g: 0.8896551, b: 0, a: 0}
-      key1: {r: 1, g: 0.8896551, b: 0, a: 1}
+      key0: {r: 1, g: 0.39310342, b: 0, a: 0}
+      key1: {r: 1, g: 0, b: 0, a: 1}
       key2: {r: 1, g: 0, b: 0, a: 0.08235294}
       key3: {r: 0, g: 0, b: 0, a: 0}
       key4: {r: 0, g: 0, b: 0, a: 0}
