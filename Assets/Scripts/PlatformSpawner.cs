@@ -12,14 +12,20 @@ public class PlatformSpawner : MonoBehaviour
 
 	void Start ()
 	{
-		_processor = AudioProcessor._instance;
+		Debug.Log(this);
+		_processor = AudioProcessor.FindObjectOfType<AudioProcessor> ();
 		_processor.onBeat.AddListener (onOnbeatDetected);
 		_processor.onSpectrum.AddListener (onSpectrum);
 		_currentIndex = 0;
 	}
 
+	private void Update() {
+		Debug.Log(_processor);
+	}
+
 	void SpawnPlatforms ()
 	{
+		Debug.Log("Spawning platforms");
 		UpdatePlatformCountIndex ();
 		_spawnPoints.Shuffle ();
 
@@ -65,6 +71,7 @@ public class PlatformSpawner : MonoBehaviour
 	{
 		[Range (0, 256.2f)]
 		public float _time = 0;
+		public Color _color = Color.white;
 		public int _numberOfPlatforms = 0;
 	}
 

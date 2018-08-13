@@ -21,9 +21,12 @@ namespace Managers
 
 		private void Update ()
 		{
-			if (Input.GetKeyDown (KeyCode.Escape) && InputManager._instance._InputMode == InputMode.Game || InputManager._instance._InputMode == InputMode.Settings)
+			if (Input.GetKeyDown (KeyCode.Escape))
 			{
-				ToggleMenu ();
+				if (InputManager._instance._InputMode == InputMode.Game)
+					ToggleMenu ();
+				else if (InputManager._instance._InputMode == InputMode.Settings)
+					ToggleMenu ();
 			}
 		}
 
