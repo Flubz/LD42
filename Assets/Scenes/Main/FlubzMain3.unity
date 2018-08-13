@@ -13900,9 +13900,9 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: bdbb0ad9fa6c29f4190adbd1b6c1602a, type: 3}
-  m_PlayOnAwake: 1
-  m_Volume: 0.049
+  m_audioClip: {fileID: 8300000, guid: 51e0f5b5fb4a7cd47adc2a99a64bb6be, type: 3}
+  m_PlayOnAwake: 0
+  m_Volume: 0.1
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -14587,7 +14587,7 @@ Transform:
   - {fileID: 558417571}
   - {fileID: 1288371299}
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &717288201
 GameObject:
@@ -15804,7 +15804,7 @@ GameObject:
   - component: {fileID: 911961373}
   - component: {fileID: 911961374}
   m_Layer: 0
-  m_Name: PlatformHolder
+  m_Name: PlatformSpawner
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -15850,14 +15850,35 @@ MonoBehaviour:
   - {fileID: 1041092304}
   _platformsAtTime:
   - _time: 0
-    _color: {r: 1, g: 1, b: 1, a: 1}
-    _numberOfPlatforms: 3
+    _fogColorChange: {r: 0.13667819, g: 0.5808821, b: 0.5808823, a: 1}
+    _numberOfPlatformsPerRow: 3
+  - _time: 46
+    _fogColorChange: {r: 0.3803922, g: 0.054901965, b: 0.43529415, a: 1}
+    _numberOfPlatformsPerRow: 3
   - _time: 134
-    _color: {r: 1, g: 1, b: 1, a: 1}
-    _numberOfPlatforms: 2
+    _fogColorChange: {r: 0.08235294, g: 0.22352943, b: 0.454902, a: 1}
+    _numberOfPlatformsPerRow: 2
   - _time: 178
-    _color: {r: 1, g: 1, b: 1, a: 1}
-    _numberOfPlatforms: 1
+    _fogColorChange: {r: 1, g: 1, b: 1, a: 1}
+    _numberOfPlatformsPerRow: 1
+  _platformSpawnRate:
+  - _time: 0
+    _spawnRate: 0.01
+  - _time: 24
+    _spawnRate: 0.1
+  - _time: 35
+    _spawnRate: 0.2
+  - _time: 46
+    _spawnRate: 0.7
+  - _time: 68
+    _spawnRate: 0.01
+  - _time: 72
+    _spawnRate: 0.7
+  - _time: 78
+    _spawnRate: 0.01
+  - _time: 87
+    _spawnRate: 0.7
+  _randRangePlatformSpawnRate: {x: 0.0001, y: 0.01}
 --- !u!1 &915106964
 GameObject:
   m_ObjectHideFlags: 0
@@ -16979,7 +17000,7 @@ MonoBehaviour:
   _canvasFader: {fileID: 1047785812}
   _multiplierUnlocker: {fileID: 1554068316}
   _maxMultiplierAmount: 256
-  _scoreForPlatform: 10
+  _scoreForPlatform: 2
   _multiText: {fileID: 2514606}
   _scoreText: {fileID: 1395480589}
   _notesForNextMultiUnlock: 5
@@ -23864,7 +23885,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: SYNTHSTORM
+  m_Text: DATA SKREAM
 --- !u!222 &1598292206
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -30038,7 +30059,7 @@ Transform:
   - {fileID: 1128823109}
   - {fileID: 1604508711}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2129636637
 MonoBehaviour:

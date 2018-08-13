@@ -62,4 +62,9 @@ public static class ExtensionMethods
 			list[n] = value;
 		}
 	}
+
+	public static bool NearlyEqual (float valA_, float valB_, float acceptableDifference_)
+	{
+		return Mathf.Abs (valA_ - valB_) <= acceptableDifference_;
+	}
 }

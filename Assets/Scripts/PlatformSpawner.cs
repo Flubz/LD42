@@ -1,78 +1,98 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.PostProcessing;
 
 public class PlatformSpawner : MonoBehaviour
 {
 	[SerializeField] Platform _platformPrefab;
 	[SerializeField] List<Transform> _spawnPoints;
-	[SerializeField] List<PlatformsToSpawnAtTime> _platformsAtTime;
+	[SerializeField] List<PlatformsPerRowAtTime> _platformsAtTime;
+	[SerializeField] List<PlatformsSpawnRateAtTime> _platformSpawnRate;
 	AudioProcessor _processor;
-	int _currentIndex = 0;
+	int _currentRowSpawnIndex = 0;
+	int _currentSpawnRateIndex = 0;
+
+	[SerializeField] Vector2 _randRangePlatformSpawnRate;
 
 	void Start ()
 	{
-		Debug.Log(this);
 		_processor = AudioProcessor.FindObjectOfType<AudioProcessor> ();
-		_processor.onBeat.AddListener (onOnbeatDetected);
-		_processor.onSpectrum.AddListener (onSpectrum);
-		_currentIndex = 0;
-	}
-
-	private void Update() {
-		Debug.Log(_processor);
+		// _processor.onBeat.AddListener (onOnbeatDetected);
+		_currentRowSpawnIndex = 0;
+		StartCoroutine (SpawnPlatformsByTime ());
 	}
 
 	void SpawnPlatforms ()
 	{
-		Debug.Log("Spawning platforms");
-		UpdatePlatformCountIndex ();
+		UpdatePlatformPerRowCountIndex ();
 		_spawnPoints.Shuffle ();
 
-		for (int i = 0; i < _platformsAtTime[_currentIndex]._numberOfPlatforms; i++)
+		for (int i = 0; i < _platformsAtTime[_currentRowSpawnIndex]._numberOfPlatformsPerRow; i++)
 		{
 			Instantiate (_platformPrefab, _spawnPoints[i].position, Quaternion.identity, transform);
 		}
 	}
 
-	//this event will be called every time a beat is detected.
-	//Change the threshold parameter in the inspector
-	//to adjust the sensitivity
-	void onOnbeatDetected ()
+	private void Update ()
 	{
-		SpawnPlatforms ();
+		Debug.Log (_processor.audioSource.time);
 	}
 
-	//This event will be called every frame while music is playing
-	void onSpectrum (float[] spectrum)
+	IEnumerator SpawnPlatformsByTime ()
 	{
-		//The spectrum is logarithmically averaged
-		//to 12 bands
-
-		for (int i = 0; i < spectrum.Length; ++i)
+		float t;
+		while (true)
 		{
-			Vector3 start = new Vector3 (i, 0, 0);
-			Vector3 end = new Vector3 (i, spectrum[i], 0);
-			Debug.DrawLine (start, end);
+			t = (Random.Range (_randRangePlatformSpawnRate.x, _randRangePlatformSpawnRate.y));
+			SpawnPlatforms ();
+			UpdatePlatformSpawnRateIndex ();
+			yield return new WaitForSeconds (t + _platformSpawnRate[_currentSpawnRateIndex]._spawnRate);
 		}
 	}
 
-	void UpdatePlatformCountIndex ()
+	void UpdatePlatformSpawnRateIndex ()
 	{
-		if (_currentIndex + 1 == _platformsAtTime.Count) return;
-		if (_processor.audioSource.time > _platformsAtTime[_currentIndex + 1]._time)
+		if (_currentSpawnRateIndex + 1 == _platformSpawnRate.Count) return;
+		if (_processor.audioSource.time > _platformSpawnRate[_currentSpawnRateIndex + 1]._time)
 		{
-			_currentIndex++;
+			_currentSpawnRateIndex++;
+		}
+	}
+
+	void UpdatePlatformPerRowCountIndex ()
+	{
+		if (_currentRowSpawnIndex + 1 == _platformsAtTime.Count) return;
+		if (_processor.audioSource.time > _platformsAtTime[_currentRowSpawnIndex + 1]._time)
+		{
+			_currentRowSpawnIndex++;
+			RenderSettings.fogColor = Color.Lerp (RenderSettings.fogColor, _platformsAtTime[_currentRowSpawnIndex]._fogColorChange, 1.0f);
 		}
 	}
 
 	[System.Serializable]
-	class PlatformsToSpawnAtTime
+	class PlatformsPerRowAtTime
 	{
 		[Range (0, 256.2f)]
 		public float _time = 0;
-		public Color _color = Color.white;
-		public int _numberOfPlatforms = 0;
+		public Color _fogColorChange = Color.white;
+		public int _numberOfPlatformsPerRow = 3;
 	}
+
+	[System.Serializable]
+	class PlatformsSpawnRateAtTime
+	{
+		[Range (0, 256.2f)]
+		public float _time = 0;
+		public float _spawnRate = 0.1f;
+	}
+
+	//this event will be called every time a beat is detected.
+	//Change the threshold parameter in the inspector
+	//to adjust the sensitivity
+	// void onOnbeatDetected ()
+	// {
+	// 	SpawnPlatforms ();
+	// }
 
 }
