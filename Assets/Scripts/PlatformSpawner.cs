@@ -14,6 +14,7 @@ public class PlatformSpawner : MonoBehaviour
 	int _currentSpawnRateIndex = 0;
 
 	[SerializeField] Vector2 _randRangePlatformSpawnRate;
+	[SerializeField] float _spawnTimeModifier = -1.0f;
 
 	void Start ()
 	{
@@ -54,7 +55,7 @@ public class PlatformSpawner : MonoBehaviour
 	void UpdatePlatformSpawnRateIndex ()
 	{
 		if (_currentSpawnRateIndex + 1 == _platformSpawnRate.Count) return;
-		if (_processor.audioSource.time > _platformSpawnRate[_currentSpawnRateIndex + 1]._time)
+		if (_processor.audioSource.time > _platformSpawnRate[_currentSpawnRateIndex + 1]._time + _spawnTimeModifier)
 		{
 			_currentSpawnRateIndex++;
 		}
