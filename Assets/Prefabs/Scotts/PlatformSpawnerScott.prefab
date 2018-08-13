@@ -69,7 +69,7 @@ MonoBehaviour:
   - _time: 0
     _fogColorChange: {r: 0.13667819, g: 0.5808821, b: 0.5808823, a: 1}
     _numberOfPlatformsPerRow: 3
-  - _time: 46
+  - _time: 44.2
     _fogColorChange: {r: 0.3803922, g: 0.054901965, b: 0.43529415, a: 1}
     _numberOfPlatformsPerRow: 3
   - _time: 90
@@ -80,7 +80,7 @@ MonoBehaviour:
     _numberOfPlatformsPerRow: 2
   - _time: 178
     _fogColorChange: {r: 0.13667819, g: 0.5808821, b: 0.5808823, a: 1}
-    _numberOfPlatformsPerRow: 1
+    _numberOfPlatformsPerRow: 2
   _platformSpawnRate:
   - _time: 0
     _spawnDelay: 0.03
@@ -109,18 +109,18 @@ MonoBehaviour:
   - _time: 168
     _spawnDelay: 0.8
   - _time: 178
-    _spawnDelay: 0.4
+    _spawnDelay: 0.3
   - _time: 198
-    _spawnDelay: 0.603
+    _spawnDelay: 0.6
   - _time: 216
     _spawnDelay: 0.2
   - _time: 232
-    _spawnDelay: 0.6
+    _spawnDelay: 0.5
   - _time: 248.5
-    _spawnDelay: 0.7
+    _spawnDelay: 0.4
   - _time: 250.4
-    _spawnDelay: 1.5
-  - _time: 256.2
-    _spawnDelay: 1.5
+    _spawnDelay: 0.3
+  - _time: 255
+    _spawnDelay: 0
   _randRangePlatformSpawnRate: {x: 0.0001, y: 0.01}
   _spawnTimeModifier: -0.8
