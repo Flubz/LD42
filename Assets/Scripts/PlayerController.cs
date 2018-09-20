@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
@@ -17,8 +16,12 @@ public class PlayerController : MonoBehaviour
 	[SerializeField] float _airControlAmount = 0.01f;
 	[Tooltip ("How much of the initial movement of the player needs to be in the beginning of the jump?")]
 	[SerializeField] float _initialJumpMultiplier = 1.0f;
-	[SerializeField] float _slamSpeed = 8.0f;
 	[SerializeField] Rigidbody _rb;
+	[SerializeField] Collider _collider;
+
+	CalibratedAccelerometer _calibratedAccel;
+
+	[SerializeField] bool _PCBuild;
 
 	Vector3 _moveDir = Vector3.zero;
 	Vector3 _jumpVelocity = Vector3.zero;
@@ -34,18 +37,32 @@ public class PlayerController : MonoBehaviour
 		_playerHealth.OnDamageEvent += OnDamaged;
 	}
 
+	public void OnGameStart ()
+	{
+		_calibratedAccel = new CalibratedAccelerometer ();
+		_calibratedAccel.CalibrateAccelerometer ();
+	}
+
 	void Update ()
 	{
 		if (InputManager._instance._InputMode != InputMode.Game || _gameOver) return;
 
-		_moveDir = new Vector3 (Input.GetAxisRaw ("Horizontal"), 0, Input.GetAxisRaw ("Vertical"));
+		if (_PCBuild) _moveDir = new Vector3 (Input.GetAxisRaw ("Horizontal"), 0, Input.GetAxisRaw ("Vertical"));
+		else
+		{
+			_moveDir = _calibratedAccel.GetAccelerometer (Input.acceleration);
+			_moveDir.z = _moveDir.y;
+			_moveDir.Remap (-1, 1, -0.1f, 0.1f);
+		}
+
+		Debug.Log (_moveDir);
 
 		_moveDir = transform.TransformDirection (_moveDir);
 
 		if (_controller.isGrounded)
 		{
 			_moveDir *= _speed;
-			if (Input.GetButton ("Jump") || Input.GetButton ("Fire1"))
+			if (Input.GetButton ("Jump") || Input.GetButton ("Fire1") || Input.touchCount == 1)
 			{
 				_jumpVelocity = _moveDir * _initialJumpMultiplier;
 				_jumpVelocity.y = _jumpSpeed;
@@ -57,16 +74,8 @@ public class PlayerController : MonoBehaviour
 		}
 		else
 		{
-			if (Input.GetButton ("Fire2"))
-			{
-				_moveDir *= _airControlAmount;
-				_jumpVelocity.y -= _gravity * Time.deltaTime * _slamSpeed;
-			}
-			else
-			{
-				_moveDir *= _airControlAmount;
-				_jumpVelocity.y -= _gravity * Time.deltaTime;
-			}
+			_moveDir *= _airControlAmount;
+			_jumpVelocity.y -= _gravity * Time.deltaTime;
 		}
 
 		if (_moveDir.magnitude > _rotationDeadzone)
@@ -76,8 +85,6 @@ public class PlayerController : MonoBehaviour
 
 	void OnDeath ()
 	{
-		// Give up game over UI;
-		// TODO
 		_gameOver = true;
 		_rb.isKinematic = true;
 		DisplayHighscores._instance.GameOver ();
@@ -90,6 +97,17 @@ public class PlayerController : MonoBehaviour
 		// Update Combo. 
 		// Damaged/Respawn Effect
 		// TODO
+	}
+
+	public void OnHitGround ()
+	{
+		_playerHealth.Damage ();
+		_collider.enabled = false;
+	}
+
+	public void OnRespawn ()
+	{
+		_collider.enabled = true;
 	}
 
 	private void OnDestroy ()
@@ -111,8 +129,7 @@ public class PlayerController : MonoBehaviour
 [System.Serializable]
 public class PlayerHealth
 {
-	int _initialMaxHealth = 3;
-	int _health = 3;
+	int _health;
 	[SerializeField] GameObject[] _healthUI;
 	public Action OnDeathEvent;
 	public Action OnDamageEvent;
@@ -123,7 +140,7 @@ public class PlayerHealth
 		if (!_invulnerable)
 		{
 			_health--;
-			for (int i = 0; i < _initialMaxHealth; i++)
+			for (int i = 0; i < _healthUI.Length; i++)
 			{
 				if (_healthUI[i].activeSelf)
 				{
@@ -138,11 +155,12 @@ public class PlayerHealth
 
 	public void ResetHealth ()
 	{
-		_health = _initialMaxHealth;
+		_health = _healthUI.Length;
 
-		for (int i = 0; i < _initialMaxHealth; i++)
+		for (int i = 0; i < _healthUI.Length; i++)
 		{
 			_healthUI[i].SetActive (true);
 		}
 	}
+
 }

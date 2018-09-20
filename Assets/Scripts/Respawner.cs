@@ -7,19 +7,23 @@ public class Respawner : MonoBehaviour
 {
 	[SerializeField] Transform _respawnPosition;
 	[SerializeField] float _respawnTime = 0.5f;
+	[SerializeField] ScaleDownOnStart _spawnGround;
+	[SerializeField] Transform _spawnGroundPos;
 
 	private void OnCollisionEnter (Collision other)
 	{
 		if (other.gameObject.CompareTag ("Player"))
 		{
-			other.gameObject.GetComponent<PlayerController> ()._playerHealth.Damage ();
-			StartCoroutine (Respawn (other.transform));
+			StartCoroutine (Respawn (other.gameObject.GetComponent<PlayerController> ()));
 		}
 	}
 
-	IEnumerator Respawn (Transform trans_)
+	IEnumerator Respawn (PlayerController pc_)
 	{
+		pc_.OnHitGround ();
 		yield return new WaitForSeconds (_respawnTime);
-		trans_.position = _respawnPosition.position;
+		pc_.OnRespawn ();
+		pc_.transform.position = _respawnPosition.position;
+		Instantiate (_spawnGround, _spawnGroundPos.position, Quaternion.identity);
 	}
 }

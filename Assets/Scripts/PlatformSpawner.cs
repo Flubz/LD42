@@ -35,11 +35,6 @@ public class PlatformSpawner : MonoBehaviour
 		}
 	}
 
-	private void Update ()
-	{
-		Debug.Log (_processor.audioSource.time);
-	}
-
 	IEnumerator SpawnPlatformsByTime ()
 	{
 		float t;
@@ -74,7 +69,7 @@ public class PlatformSpawner : MonoBehaviour
 	[System.Serializable]
 	class PlatformsPerRowAtTime
 	{
-		[Range (0, 256.2f)]
+		[Range (0, 275f)]
 		public float _time = 0;
 		public Color _fogColorChange = Color.white;
 		public int _numberOfPlatformsPerRow = 3;
@@ -84,7 +79,7 @@ public class PlatformSpawner : MonoBehaviour
 	class PlatformsSpawnRateAtTime
 	{
 		[Header ("")]
-		[Range (0, 256.2f)]
+		[Range (0, 275f)]
 		public float _time = 0;
 		[Range (0, 1.5f)] public float _spawnDelay = 0.1f;
 	}
