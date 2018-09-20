@@ -20,7 +20,7 @@ public class PlayerController : MonoBehaviour
 	[SerializeField] Collider _collider;
 
 	CalibratedAccelerometer _calibratedAccel;
-
+	[SerializeField] float _accelerometerDeadzone;
 	[SerializeField] bool _PCBuild;
 
 	Vector3 _moveDir = Vector3.zero;
@@ -52,6 +52,7 @@ public class PlayerController : MonoBehaviour
 		{
 			_moveDir = _calibratedAccel.GetAccelerometer (Input.acceleration);
 			_moveDir.z = _moveDir.y;
+			if (Math.Abs (_moveDir.x) <= _accelerometerDeadzone && Math.Abs (_moveDir.z) <= _accelerometerDeadzone) return;
 			_moveDir.Remap (-1, 1, -0.1f, 0.1f);
 		}
 
