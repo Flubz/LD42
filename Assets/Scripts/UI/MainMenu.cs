@@ -40,6 +40,7 @@ namespace Managers
 			AudioProcessor._instance.audioSource.Stop ();
 			AudioProcessor._instance.audioSource.Play ();
 			InputManager._instance.SetInputMode (InputMode.Game);
+			FindObjectOfType<PlayerController>().OnGameStart();
 		}
 
 		IEnumerator FadeOutAudio ()
@@ -52,7 +53,6 @@ namespace Managers
 			}
 			_audio.Stop ();
 			_audio.volume = _initialVolume;
-			Debug.Log ("ASD");
 		}
 
 		public void OnClickExit ()
