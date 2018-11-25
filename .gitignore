@@ -22,3 +22,8 @@
 sysinfo.txt
 
 Builds/
+
+# Unity Plugins
+AmplifyShaderEditor/
+Demigiant/
+Sirenix/
